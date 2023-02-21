@@ -1,0 +1,8 @@
+# IDE
+.idea
+
+# cache
+__pycache__
+
+# for API safety
+secret.py
