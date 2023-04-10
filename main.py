@@ -16,26 +16,31 @@ def response_maker(res):
     out = {}
     out.update(find_dict(res["SeoulRtd.citydata"]["CITYDATA"], "AREA_NM"))
     out.update(res["SeoulRtd.citydata"]["CITYDATA"]["LIVE_PPLTN_STTS"]["LIVE_PPLTN_STTS"])
-    out.update(res["SeoulRtd.citydata"]["CITYDATA"]["ROAD_TRAFFIC_STTS"]["AVG_ROAD_DATA"])
+    out.pop("AREA_CONGEST_MSG", None)
+    # out.update(res["SeoulRtd.citydata"]["CITYDATA"]["ROAD_TRAFFIC_STTS"]["AVG_ROAD_DATA"])
 
-    try:
-        accident_status = res["SeoulRtd.citydata"]["CITYDATA"]["ACDNT_CNTRL_STTS"]["ACDNT_CNTRL_STTS"]
-    except TypeError:
-        out.update({"ACDNT_CNTRL_CNT": 0})
-    else:
-        # # If you need the accident information, use this code (but this is not good for statistics)
-        # if type(accident_status) is list:
-        #     out.update({"ACDNT_CNTRL_CNT": len(accident_status)})
-        #     for i in range(len(accident_status)):
-        #         tmp = dict(("ACDNT" + str(i) + "_" + key, value) for (key, value) in accident_status[i].items())
-        #         out.update(tmp)
-        # else:
-        #     out.update(accident_status)
-        out.update({"ACDNT_CNTRL_CNT": len(accident_status)})
+    tmp = "\'" + out["PPLTN_TIME"] + "\'"
+    print("tmp:", tmp)
+    out.update({"PPLTN_TIME": tmp})
 
-    weather_status = dict_response["SeoulRtd.citydata"]["CITYDATA"]["WEATHER_STTS"]["WEATHER_STTS"]
-    weather_status.pop("FCST24HOURS", None)
-    out.update(weather_status)
+    # try:
+    #     accident_status = res["SeoulRtd.citydata"]["CITYDATA"]["ACDNT_CNTRL_STTS"]["ACDNT_CNTRL_STTS"]
+    # except TypeError:
+    #     out.update({"ACDNT_CNTRL_CNT": 0})
+    # else:
+    #     # # If you need the accident information, use this code (but this is not good for statistics)
+    #     # if type(accident_status) is list:
+    #     #     out.update({"ACDNT_CNTRL_CNT": len(accident_status)})
+    #     #     for i in range(len(accident_status)):
+    #     #         tmp = dict(("ACDNT" + str(i) + "_" + key, value) for (key, value) in accident_status[i].items())
+    #     #         out.update(tmp)
+    #     # else:
+    #     #     out.update(accident_status)
+    #     out.update({"ACDNT_CNTRL_CNT": len(accident_status)})
+
+    # weather_status = dict_response["SeoulRtd.citydata"]["CITYDATA"]["WEATHER_STTS"]["WEATHER_STTS"]
+    # weather_status.pop("FCST24HOURS", None)
+    # out.update(weather_status)
     return out
 
 
